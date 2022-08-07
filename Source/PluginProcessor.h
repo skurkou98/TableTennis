@@ -65,5 +65,6 @@ private:
     juce::AudioParameterFloat* delayTimeR; // RIGHT
     juce::AudioParameterFloat* feedback; // Feedback
     juce::AudioParameterFloat* delayMix; // Wet-Dry Mix
-    //==============================================================================
+
+    // These float values need to be saved in getStateInformation for user to retain session plugin settings
 };

@@ -215,15 +215,24 @@ juce::AudioProcessorEditor* TableTennisAudioProcessor::createEditor()
 //==============================================================================
 void TableTennisAudioProcessor::getStateInformation(juce::MemoryBlock& destData)
 {
-    // You should use this method to store your parameters in the memory block.
-    // You could do that either as raw data, or use the XML or ValueTree classes
-    // as intermediaries to make it easy to save and load complex data.
+    // Save plugin state here
+    juce::MemoryOutputStream stream(destData, true);
+    // Store a float into memory
+    stream.writeFloat(*delayTimeL);
+    stream.writeFloat(*delayTimeR);
+    stream.writeFloat(*feedback);
+    stream.writeFloat(*delayMix);
 }
 
 void TableTennisAudioProcessor::setStateInformation(const void* data, int sizeInBytes)
 {
-    // You should use this method to restore your parameters from this memory block,
-    // whose contents will have been created by the getStateInformation() call
+    // Restore plugin state here from getStateInformation block
+    juce::MemoryInputStream stream(data, static_cast<size_t> (sizeInBytes), false);
+    // Read a float from memory i.e. retrieve the parameter value
+    *delayTimeL = stream.readFloat();
+    *delayTimeR = stream.readFloat();
+    *feedback = stream.readFloat();
+    *delayMix = stream.readFloat();
 }
 
 //==============================================================================
