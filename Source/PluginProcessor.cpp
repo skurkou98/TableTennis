@@ -215,7 +215,7 @@ juce::AudioProcessorEditor* TableTennisAudioProcessor::createEditor()
 //==============================================================================
 void TableTennisAudioProcessor::getStateInformation(juce::MemoryBlock& destData)
 {
-    // Save plugin state here
+    // Save plugin state here from header file parameters
     juce::MemoryOutputStream stream(destData, true);
     // Store a float into memory
     stream.writeFloat(*delayTimeL);
@@ -228,7 +228,7 @@ void TableTennisAudioProcessor::setStateInformation(const void* data, int sizeIn
 {
     // Restore plugin state here from getStateInformation block
     juce::MemoryInputStream stream(data, static_cast<size_t> (sizeInBytes), false);
-    // Read a float from memory i.e. retrieve the parameter value
+    // Read a float from memory
     *delayTimeL = stream.readFloat();
     *delayTimeR = stream.readFloat();
     *feedback = stream.readFloat();

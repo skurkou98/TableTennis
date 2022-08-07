@@ -57,14 +57,14 @@ private:
     juce::AudioBuffer<float> delayBuffer;
 
     int delayBufferLength = 1;
-    int readIndexL = 0; // LEFT
-    int readIndexR = 0; // RIGHT
+    int readIndexL = 0; // Left Delay
+    int readIndexR = 0; // Right Delay
     int writeIndex = 0; // Write
 
-    juce::AudioParameterFloat* delayTimeL;  // LEFT
-    juce::AudioParameterFloat* delayTimeR; // RIGHT
+    juce::AudioParameterFloat* delayTimeL;  // Left Delay
+    juce::AudioParameterFloat* delayTimeR; // Right Delay
     juce::AudioParameterFloat* feedback; // Feedback
     juce::AudioParameterFloat* delayMix; // Wet-Dry Mix
 
-    // These float values need to be saved in getStateInformation for user to retain session plugin settings
+    // These float values need to be saved in getStateInformation for user to retain plugin settings for session
 };
