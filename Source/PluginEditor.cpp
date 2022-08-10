@@ -11,7 +11,7 @@
 
 //==============================================================================
 TableTennisAudioProcessorEditor::TableTennisAudioProcessorEditor(TableTennisAudioProcessor& p)
-    : GenericAudioProcessorEditor(&p), audioProcessor(p)
+    : GenericAudioProcessorEditor(&p), audioProcessor(p) 
 {
     setSize(400, 250);
 }
