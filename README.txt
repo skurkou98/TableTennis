@@ -8,9 +8,11 @@ with the following user-defined controls:
 -Feedback (0.0-0.99).
 -Wet/Dry Delay mix (0.0-1.0).
 
-It facilitates the use of the Generic Audio Processor Editor available in JUCE for the User Interface.
+This plugin facilitates the use of a generic UI via JUCE library code and allows for the user to retain their previous input settings 
+when reopening a session.
+
+It has been designed for use as a VST3 plugin. Simply download and add "...TableTennis\Builds\VisualStudio2019\x64\Debug\VST3" as a 
+path-list for plugins in your DAW and re-scan. TableTennis was tested using Reaper v6.50 (2022).
 
 This project was completed as part of the Advanced Audio Processing module of the BSc (Hons) Audio Technology at Glasgow 
 Caledonian University.
-
-It has been designed for use as a VST3 plugin and can be tested in Reaper using both mono or stereo audio files.
