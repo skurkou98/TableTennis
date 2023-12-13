@@ -149,6 +149,7 @@ void TableTennisAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, j
     if (buffer.getNumChannels() < 2) // Buffer must have 2 channels to work correctly
         return;
 
+    // Introduce temporary read and write indices to hold affected audio while retaining the original input
     int tempReadIndexL = 0;
     int tempReadIndexR = 0;
     int tempWriteIndex = 0;
@@ -162,10 +163,12 @@ void TableTennisAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, j
         auto* leftDelay = delayBuffer.getWritePointer(0); // LEFT
         auto* rightDelay = delayBuffer.getWritePointer(1); // RIGHT
 
+        // Store current values of read and write indices (to avoid race conditions)
         tempReadIndexL = readIndexL;
         tempReadIndexR = readIndexR;
         tempWriteIndex = writeIndex;
 
+        // Increment the indices and wrap them around the given length of the delay buffer
         if (tempDelayTimeL != delayTimeL->get())
             readIndexL = (int)(writeIndex - (delayTimeL->get() * getSampleRate()) + delayBufferLength) % delayBufferLength;
 
@@ -177,12 +180,13 @@ void TableTennisAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, j
             auto inL = leftChannel[i]; // LEFT
             auto inR = rightChannel[i]; // RIGHT
 
-            auto outL = inL + (delayMix->get() * leftDelay[tempReadIndexL]);
-            auto outR = inR + (delayMix->get() * rightDelay[tempReadIndexR]);
+            auto outL = inL + (delayMix->get() * leftDelay[tempReadIndexL]); // Formula for audio output which combines original and delayed LEFT channel
+            auto outR = inR + (delayMix->get() * rightDelay[tempReadIndexR]); // Formula for audio output which combines original and delayed RIGHT channel
 
             leftDelay[tempWriteIndex] = inL + (rightDelay[tempReadIndexR] * feedback->get()); // LEFT channel swaps with RIGHT for ping-pong effect
             rightDelay[tempWriteIndex] = inR + (leftDelay[tempReadIndexL] * feedback->get()); // RIGHT channel swaps with LEFT for ping-pong effect
 
+            // Check if temp read indices are greater or equal to delay buffer length and reset to start (0)
             if (++tempReadIndexL >= delayBufferLength)
                 tempReadIndexL = 0;
             if (++tempReadIndexR >= delayBufferLength)
@@ -194,6 +198,8 @@ void TableTennisAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, j
             rightChannel[i] = outR;
         }
     }
+
+    // Update the original read and write indices with values stored in temps
     readIndexL = tempReadIndexL;
     readIndexR = tempReadIndexR;
     writeIndex = tempWriteIndex;
